@@ -1,6 +1,6 @@
 #O objetivo atual aqui no mars é construir por meio do bitmap junto ao mapeamento 
 #de teclas, um joguinho da cobra.
-# Logica implementada por Wesley geilson, o codigo a seguir não é a versão mais simplificada do jogo
+# Logica implementada por Wesley geilson e gagau, o codigo a seguir não é a versão mais simplificada do jogo
 
 #logica do jogo:
 #1. A cobrinha iniciara na tela
@@ -68,7 +68,7 @@ addi $sp,4
 jr $ra
 
 
-IS_KEY_PRESSED:		#int read_key() // OBS: ESSA FUNCAO NAO ESTÁ FUNCIONANDO
+IS_KEY_PRESSED:		#int read_key() // OBS: ESSA FUNCAO NAO EST�? FUNCIONANDO
 
 li $v0, 5		#o nosso cod para chamar o sistema e dizer "Estou lendo seu numero agora"
 move $a1, $v0
