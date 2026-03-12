@@ -70,9 +70,9 @@ jal WRITE_PIXEL
 
 
 LOOP:
-# Apagar posição atual
+ # Pausa de 150 milissegundos
 li $v0, 32
-li $a0, 150             # Pausa de 150 milissegundos
+li $a0, 150
 syscall
 
 #referencia o x e o y e pinta de preto o pixel atual

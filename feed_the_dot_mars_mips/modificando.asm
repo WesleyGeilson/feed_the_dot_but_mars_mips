@@ -20,11 +20,6 @@ current_dir: .word 100           # Direção inicial (d = direita)
 score: .word 0                   # Pontuação inicial
 delay: .word 150                  # Delay inicial (ms)
 
-# Mensagens
-msg_score: .asciiz "Pontuacao: "
-msg_newline: .asciiz "\n"
-msg_game_over: .asciiz "\n=== FIM DE JOGO! Pontuacao final: "
-msg_congrats: .asciiz "\nParabens! Voce venceu!\n"
 
 .text
 .globl MAIN
@@ -51,9 +46,6 @@ MAIN:
     lw $a1, y_food
     lw $a2, COLOR_FOOD
     jal WRITE_PIXEL
-    
-    # Mostra pontuação inicial
-    jal DISPLAY_SCORE
 
 LOOP:
     # Verifica se atingiu pontuação máxima
@@ -84,7 +76,7 @@ MOVEMENT_LOGIC:
     beq $t3, 115, IS_DOWN_PRESSED  # 's' = 115
     beq $t3, 97,  IS_LEFT_PRESSED  # 'a' = 97
     beq $t3, 100, IS_RIGHT_PRESSED # 'd' = 100
-    j REWRITE_BABY                  # Se tecla inválida, mantém direção
+    j REWRITE_BABY                 
 
 IS_RIGHT_PRESSED:
     lw $t0, x_pos
@@ -135,12 +127,10 @@ CHECK_FOOD_COLLISION:
     lw $t5, delay
     li $t6, 20                      # Delay mínimo
     beq $t5, $t6, SKIP_DELAY_REDUCE
-    addi $t5, $t5, -10               # Reduz 10ms a cada comida
+    addi $t5, $t5, -30               # Reduz 10ms a cada comida
     sw $t5, delay
     
 SKIP_DELAY_REDUCE:
-    # Mostra pontuação atualizada
-    jal DISPLAY_SCORE
     
     # Gera nova comida
     jal GENERATE_FOOD
@@ -194,27 +184,6 @@ GENERATE_FOOD_END:
     addi $sp, $sp, 4
     jr $ra
 
-# Função para mostrar pontuação no console
-DISPLAY_SCORE:
-    addi $sp, $sp, -4
-    sw $ra, 0($sp)
-    
-    li $v0, 4
-    la $a0, msg_score
-    syscall
-    
-    li $v0, 1
-    lw $a0, score
-    syscall
-    
-    li $v0, 4
-    la $a0, msg_newline
-    syscall
-    
-    lw $ra, 0($sp)
-    addi $sp, $sp, 4
-    jr $ra
-
 # Função para desenhar pixel no Bitmap Display
 WRITE_PIXEL:
     addi $sp, $sp, -4
@@ -254,20 +223,6 @@ READ_END:
 
 # Função de fim de jogo (vitória)
 GAME_OVER_WIN:
-    # Mostra mensagem de parabéns
-    li $v0, 4
-    la $a0, msg_congrats
-    syscall
-    
-    # Mostra pontuação final
-    li $v0, 4
-    la $a0, msg_game_over
-    syscall
-    
-    li $v0, 1
-    lw $a0, score
-    syscall
-    
     # Encerra o programa
     li $v0, 10
     syscall
