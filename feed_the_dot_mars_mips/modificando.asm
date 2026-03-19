@@ -4,7 +4,7 @@
 
 .data
 .eqv SIZE 16
-.eqv TARGET_SCORE 5          # Pontuação alvo para fim de jogo
+.eqv TARGET_SCORE 5          	# Pontuação alvo para fim de jogo
 
 COLOR_SNAKE: .word 0x00FFFF00    # Amarelo
 COLOR_FOOD:  .word 0x00FF0000    # Vermelho
@@ -18,7 +18,7 @@ y_food: .word 8
 
 current_dir: .word 100           # Direção inicial (d = direita)
 score: .word 0                   # Pontuação inicial
-delay: .word 150                  # Delay inicial (ms)
+delay: .word 150                 # Delay inicial 
 
 
 .text
@@ -26,10 +26,10 @@ delay: .word 150                  # Delay inicial (ms)
 
 MAIN:
     # Inicializa semente aleatória
-    li $v0, 30                    # Get system time
-    syscall
-    move $a1, $a0                  # Use time as seed
-    li $v0, 40                     # Set seed
+    li $v0, 30			# Pega um tempo vas
+    syscall			#GAGAU REVER AQUI 
+    move $a1, $a0                 
+    li $v0, 40                    
     syscall
     
     # Gera posição inicial da comida (diferente da cobra)
@@ -64,7 +64,7 @@ LOOP:
     lw $a2, COLOR_BG
     jal WRITE_PIXEL
 
-    # Lê teclado
+    # Lê entrada teclado
     jal READ_KEYBOARD
     beq $v0, $zero, MOVEMENT_LOGIC
     sw $v0, current_dir
@@ -201,7 +201,7 @@ WRITE_PIXEL:
     addi $sp, $sp, 4
     jr $ra
 
-# Função para ler teclado via MMIO (não bloqueante)
+# Função para ler teclado
 READ_KEYBOARD:
     addi $sp, $sp, -4
     sw $ra, 0($sp)
